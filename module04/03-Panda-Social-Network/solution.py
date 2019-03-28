@@ -6,7 +6,6 @@ class Panda:
             raise AttributeError
         self.panda_email = email
         self.panda_gender = gender
-        self.friends = []
 
     def name(self):
         return self.panda_name
@@ -23,9 +22,6 @@ class Panda:
     def isFemale(self):
         return self.panda_gender == 'female'
 
-    def getFriends(self):
-        return self.friends
-
     def __str__(self):
         return self.panda_name
 
@@ -33,10 +29,7 @@ class Panda:
         return hash(self.panda_name + self.panda_email)
 
     def __eq__(self, other):
-        name = self.panda_name == other.panda_name
-        email = self.panda_email == other.panda_email
-        gender = self.panda_gender == other.panda_gender
-        return (name and email and gender)
+        return self.panda_name == other.panda_name and self.panda_email == other.panda_email and self.panda_gender == other.panda_gender
 
 
 class PandaSocialNetwork:
@@ -44,10 +37,9 @@ class PandaSocialNetwork:
     def __init__(self):
         self.pandas = []
         self.friends = {}
-        self.already_counted = []
 
     def add_panda(self, panda):
-        if panda in self.pandas:
+        if self.has_panda(panda):
             raise PandasAlreadyThere
         self.pandas.append(panda)
         self.friends[panda] = []
@@ -56,34 +48,31 @@ class PandaSocialNetwork:
         return panda in self.pandas
 
     def make_friends(self, panda1, panda2):
-        if panda1 not in self.pandas:
+        if not self.has_panda(panda1):
             self.add_panda(panda1)
-        if panda2 not in self.pandas:
+        if not self.has_panda(panda2):
             self.add_panda(panda2)
 
-        if panda2 in self.friends and panda1 in self.friends[panda2]:
+        if self.are_friends(panda1, panda2):
             raise PandasAlreadyFriends
 
         self.friends[panda1].append(panda2)
         self.friends[panda2].append(panda1)
 
-        panda1.friends.append(panda2)
-        panda2.friends.append(panda1)
-
     def are_friends(self, panda1, panda2):
         return panda1 in self.friends[panda2]
 
     def friends_of(self, panda):
-        if panda not in self.pandas:
+        if not self.has_panda(panda):
             return False
 
         return self.friends[panda]
 
     def connection_level(self, panda1, panda2):
-        if panda1 not in self.pandas or panda2 not in self.pandas:
+        if not self.has_panda(panda1) or not self.has_panda(panda2):
             return False
 
-        if panda1 in self.friends and panda2 in self.friends[panda1]:
+        if self.are_friends(panda1, panda2):
             return 1
 
         return self.check_friend_pandas_for_connection(panda1, panda2, already_checked=[])
@@ -120,11 +109,9 @@ class PandaSocialNetwork:
         return True if self.check_friend_pandas_for_connection(panda1, panda2) > 0 else False
 
     def how_many_gender_in_network(self, level, panda, gender):
-        self.already_counted = []
         if level < 2:
             return len([friend_panda for friend_panda in self.friends[panda] if friend_panda.gender() == gender])
-        else:
-            return self.iterate_my_friends(panda, gender)
+        return self.iterate_my_friends(panda, gender)
 
     def iterate_my_friends(self, panda, gender):
         count = 0
@@ -138,11 +125,9 @@ class PandaSocialNetwork:
         return count
 
 
-
-            # self.already_counted.append(friend_panda)
-            # count += self.iterate_my_friends(friend_panda, gender)
 class PandasAlreadyThere(AttributeError):
     pass
+
 
 class PandasAlreadyFriends(AttributeError):
     pass
