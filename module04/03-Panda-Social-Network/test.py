@@ -62,7 +62,7 @@ class TestSocialNetwork(unittest.TestCase):
     def test_friends_of_panda_when_panda_not_in_network(self):
         self.assertFalse(self.network.friends_of(self.ivo))
 
-    @unittest.skip('May not be implemented')
+
     def test_connection_level_between_two_pandas(self):
         rado = Panda("Rado", "rado@pandamail.com", "male")
         pavli = Panda("Pavli", "pavlin@pandamail.com", "male")
@@ -78,7 +78,7 @@ class TestSocialNetwork(unittest.TestCase):
         self.assertEqual(self.network.connection_level(self.ivo, pavli), 2)
         self.assertEqual(self.network.connection_level(self.ivo, maria), 3)
 
-    @unittest.skip('May not be implemented')
+
     def test_are_connected(self):
         rado = Panda("Rado", "rado@pandamail.com", "male")
         pavli = Panda("Pavli", "pavlin@pandamail.com", "male")
@@ -90,7 +90,7 @@ class TestSocialNetwork(unittest.TestCase):
         self.assertTrue(self.network.are_connected(self.ivo, pavli))
         self.assertFalse(self.network.are_connected(self.ivo, maria))
 
-    @unittest.skip('May not be implemented')
+
     def test_connection_level_when_panda_has_no_friends(self):
         rado = Panda("Rado", "rado@pandamail.com", "male")
         self.network.add_panda(rado)
@@ -98,14 +98,13 @@ class TestSocialNetwork(unittest.TestCase):
 
         self.assertEqual(self.network.connection_level(self.ivo, rado), -1)
 
-    @unittest.skip('May not be implemented')
+
     def test_connection_level_when_panda_not_in_network(self):
         rado = Panda("Rado", "rado@pandamail.com", "male")
         self.network.add_panda(rado)
 
         self.assertFalse(self.network.connection_level(self.ivo, rado))
 
-    @unittest.skip('May not be implemented')
     def test_how_many_genders_in_network(self):
         rado = Panda("Rado", "rado@pandamail.com", "male")
         pavli = Panda("Pavlin", "pavlin@pandamail.com", "male")
@@ -120,14 +119,10 @@ class TestSocialNetwork(unittest.TestCase):
         self.network.make_friends(self.ivo, pavli)
         self.network.make_friends(maria, alex)
 
-        self.assertEqual(self.network.how_many_gender_in_network(
-                                    1, self.ivo, "male"), 2)
-        self.assertEqual(self.network.how_many_gender_in_network(
-                                    1, self.ivo, "female"), 0)
-        self.assertEqual(self.network.how_many_gender_in_network(
-                                    2, self.ivo, "female"), 2)
-        self.assertEqual(self.network.how_many_gender_in_network(
-                                    25, self.ivo, "male"), 3)
+        self.assertEqual(self.network.how_many_gender_in_network(1, self.ivo, "male"), 2)
+        self.assertEqual(self.network.how_many_gender_in_network(1, self.ivo, "female"), 0)
+        self.assertEqual(self.network.how_many_gender_in_network(2, self.ivo, "female"), 2)
+        self.assertEqual(self.network.how_many_gender_in_network(25, self.ivo, "male"), 3)
 
 if __name__ == '__main__':
     unittest.main()
